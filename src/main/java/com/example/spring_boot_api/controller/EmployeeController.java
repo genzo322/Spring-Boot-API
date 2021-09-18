@@ -1,10 +1,12 @@
 package com.example.spring_boot_api.controller;
 
+import com.example.spring_boot_api.dto.EmployeeDTO;
 import com.example.spring_boot_api.entity.Employee;
 import com.example.spring_boot_api.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeController {
@@ -18,8 +20,15 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public List<Employee> getAllEmployees(){
-        return employeeService.getAllemployees();
+    public List<EmployeeDTO> getAllEmployees(){
+        List<Employee> employees = employeeService.getAllemployees();
+
+        List<EmployeeDTO> dtoList = new ArrayList<>();
+        for (Employee employee : employees){
+            dtoList.add(new EmployeeDTO(employee));
+        }
+
+        return dtoList;
     }
 
     @GetMapping("/employees/{id}")
