@@ -1,12 +1,14 @@
 package com.example.spring_boot_api.controller;
 
 import com.example.spring_boot_api.entity.Employee;
+import com.example.spring_boot_api.error.EmployeeNotFoundException;
 import com.example.spring_boot_api.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class EmployeeController {
 
     @Autowired
@@ -23,7 +25,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
-    public Employee getEmployeeById(@PathVariable("id") Long employeeId){
+    public Employee getEmployeeById(@PathVariable("id") Long employeeId) throws EmployeeNotFoundException {
         return employeeService.getEmployeeById(employeeId);
     }
 

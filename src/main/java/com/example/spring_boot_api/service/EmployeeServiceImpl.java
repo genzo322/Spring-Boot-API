@@ -1,11 +1,15 @@
 package com.example.spring_boot_api.service;
 
+import com.example.spring_boot_api.error.EmployeeNotFoundException;
 import com.example.spring_boot_api.repository.EmployeeRepository;
 import com.example.spring_boot_api.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
@@ -22,8 +26,13 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee getEmployeeById(Long employeeId) {
-        return employeeRepository.findById(employeeId).get();
+    public Employee getEmployeeById(Long employeeId) throws EmployeeNotFoundException {
+        Optional<Employee> employee = employeeRepository.findById(employeeId);
+
+        if ((!employee.isPresent())) {
+            throw new EmployeeNotFoundException("Employee not found!");
+        }
+        return employee.get();
     }
 
     @Override
